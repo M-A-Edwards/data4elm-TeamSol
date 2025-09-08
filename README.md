@@ -31,7 +31,7 @@ python3 filter.py
 ## Input
 
 - Uses the detokenized OptimalScale/ClimbLab dataset.
-- For replication, no local input file is required — the scripts load the dataset via the Hugging Face `datasets` library in streaming mode.
+- For replication, no local input file is required, the scripts load the dataset via the Hugging Face `datasets` library in streaming mode.
 
 ---
 
