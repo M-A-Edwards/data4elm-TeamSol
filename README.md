@@ -39,6 +39,7 @@ python3 filter.py
 
 - JSON files in text-only format.
 - By default saved to an `output/` directory (changeable in the script).
-
+- The output directory consisting of JSON files can then be used as the dataset input directory for the training script.
+  
 ---
 
