@@ -9,38 +9,26 @@ tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
 
 # Heuristic regex patterns
 HEURISTICS = {
-    "reasoning": [
-        r"\b(if.+?then|if.+?,\s*then)\b",
-        r"\bbecause\b.+?\b(so|therefore|thus|hence)\b",
-        r"\b(this implies|it follows that|we can conclude|as a result)\b",
-        r"\b(prove|deduce|derive|infer)\b",
-        r"\b(logic(al)? reasoning|syllogism|premise|conclusion)\b",
-        r"\b(necessary|sufficient)\s(condition|assumption)\b"
-    ],
-    "function_calling": [
-        r"\b(def|lambda)\s+\w+\s*\(.*?\)\s*:",
-        r"\w+\s*\(.*?\)",
-        r"\b(return|yield)\b.*",
-        r"\b(params?|arguments?|kwargs|args)\b",
-        r"\b(method|function|callback|handler)\b",
-        r"\b(API\s+call|invoke|execute)\b.*?\bfunction\b"
-    ],
     "roleplay": [
-        r"\b(hello|hi|hey|greetings)[.!]?\b",
-        r"\b(i am|i'm|you are|you're)\b.*?\b(bot|assistant|human|person)\b",
-        r"\b(let's|shall we)\b.*\b(play|pretend|imagine|go on an adventure)\b",
-        r"\b(my name is|call me|you can be)\b",
-        r"\b(how are you\??|what's up\??)\b",
-        r"\b(in character|out of character|OOC)\b"
+        r"\b(you are|you\'re|i am|i\'m|we are|we\'re)\b.+?\b(character|role|person|identity|name)\b",
+        r"\b(what is your|tell me your|describe your)\s+(name|age|job|background|story)\?", 
+        r"\b(pretend you are|let\'s pretend|in character|out of character)\b" 
     ],
     "rag": [
-        r"\b(retrieve(d|s)?|retrieval)\b.+?\b(document|passage|chunk|snippet|text)\b",
-        r"\bfrom\b.+?\b(corpus|knowledge base|docs|database|index)\b",
-        r"\bsearch\b.+?\b(for|query|through)\b",
-        r"\b(question answering|QA system|RAG model|contextual answer)\b",
-        r"\bknowledge\s(graph|base|source)\b",
-        r"\bsemantic\ssearch\b"
-    ]
+        r"\b(why|who|how|what|where)\b.+?\b(\?|answer|reason|explain|context)\b",
+        r"\b(retrieve(d|s)?|retrieval|context|based on|according to)\b.+?\b(text|story|passage|information)\b", 
+        r"\b(narrator|story|situation|scenario)\b.+?\b(ask|question|response|detail)\b"
+    ],
+    "reasoning": [
+        r"\bif\b.+?\bthen\b",
+        r"\bhow\s+many\b",
+        r"\b(prove|deduce|derive|infer|therefore|thus|hence)\b" 
+        
+    ],
+    "function_calling": [
+        r"\b[\w\.]+\s*\(\s*\w+\s*=\s*[^,)]+(?:\s*,\s*\w+\s*=\s*[^,)]+)*\s*\)",
+    ],
+    
 }
 
 # TF-IDF vectorizers cache
