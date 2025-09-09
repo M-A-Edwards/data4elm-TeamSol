@@ -10,10 +10,10 @@ from utils import (
 max_examples_per_cluster = 50000
 min_length, max_length = 256, 4096
 task_clusters = {
-    "reasoning": list(range(1, 8)),
-    "function_calling": list(range(8, 15)),
-    # "roleplay": list(range(15, 18)),
-    # "rag": list(range(18, 21))
+    "reasoning": list(range(1, 5)),
+    "rag": list(range(6, 11))
+    "function_calling": list(range(11, 16)),
+    "roleplay": list(range(16, 21)),
 }
 output_dir = "output"
 os.makedirs(output_dir, exist_ok=True)
@@ -29,9 +29,9 @@ def process_cluster(cluster_id, dataset):
 
     for example in dataset:
         text = example["text"]
-        token_count = len(tokenizer.encode(text, add_special_tokens=False))
-        if min_length <= token_count <= max_length:
-            if classify_text(text, task):
+         if classify_text(text,task) > 0:
+            token_count = len(tokenizer.encode(text, add_special_tokens=False))
+            if min_length <= token_count <= max_length:
                 filtered_examples.append({"text": text, "token_count": token_count})
                 token_count_total += token_count
                 if len(filtered_examples) >= max_examples_per_cluster:
