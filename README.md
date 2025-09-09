@@ -9,8 +9,8 @@ This repository provides scripts to filter and categorize subsets of the ClimbLa
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/M-A-Edwards/data-filtering-challenge.git
-cd data-filtering-challenge
+git clone https://github.com/M-A-Edwards/data4elm-TeamSol.git
+cd data4elm-TeamSol
 ```
 2. (Optional) Create a virtual environment:
 ```bash
