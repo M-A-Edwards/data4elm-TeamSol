@@ -29,7 +29,7 @@ def process_cluster(cluster_id, dataset):
 
     for example in dataset:
         text = example["text"]
-         if classify_text(text,task) > 0:
+        if classify_text(text,task) > 0:
             token_count = len(tokenizer.encode(text, add_special_tokens=False))
             if min_length <= token_count <= max_length:
                 filtered_examples.append({"text": text, "token_count": token_count})
