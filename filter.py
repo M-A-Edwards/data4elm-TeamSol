@@ -7,7 +7,7 @@ from utils import (
 )
 
 # Config
-max_examples_per_cluster = 5
+max_examples_per_cluster = 2000
 min_length, max_length = 256, 4096
 task_clusters = {
     "reasoning": list(range(1, 6)),
