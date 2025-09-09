@@ -7,7 +7,7 @@ from utils import (
 )
 
 # Config
-max_examples_per_cluster = 50000
+max_examples_per_cluster = 2000
 min_length, max_length = 256, 4096
 task_clusters = {
     "reasoning": list(range(1, 5)),
@@ -58,7 +58,7 @@ def main():
     token_counts = {task: 0 for task in task_clusters}
     example_counts = {task: 0 for task in task_clusters}
 
-    for cluster_id in tqdm(range(1, 15), desc="Processing Clusters"):
+    for cluster_id in tqdm(range(1, 21), desc="Processing Clusters"):
         cluster_dataset = dataset.filter(lambda x: x.get("cluster_id", cluster_id) == cluster_id)
         filtered_examples, token_count = process_cluster(cluster_id, cluster_dataset)
         if filtered_examples:
