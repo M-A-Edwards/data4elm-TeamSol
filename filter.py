@@ -10,7 +10,7 @@ from utils import (
 max_examples_per_cluster = 5
 min_length, max_length = 256, 4096
 task_clusters = {
-    "reasoning": list(range(1, 5)),
+    "reasoning": list(range(1, 6)),
     "rag": list(range(6, 11)),
     "function_calling": list(range(11, 16)),
     "roleplay": list(range(16, 21)),
