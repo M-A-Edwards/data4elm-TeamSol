@@ -14,10 +14,8 @@ min_output_tokens, max_output_tokens = 1, 100
 min_input_sents, max_input_sents = 1, 5
 min_output_sents, max_output_sents = 1, 5
 task_clusters = {
-    "reasoning": list(range(1, 6)),
-    "rag": list(range(6, 11)),
-    "function_calling": list(range(11, 14)),
-    "roleplay": list(range(14, 21)),
+    "reasoning": list(range(1, 6)), # + list(range(11, 16)),
+    "rag": list(range(6, 11)), # + list(range(16, 21)),
 }
 output_dir = "output"
 os.makedirs(output_dir, exist_ok=True)
