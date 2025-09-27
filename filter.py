@@ -8,7 +8,7 @@ from utils import (
 from datetime import datetime
 
 # Config
-max_examples_per_cluster = 2000
+max_examples_per_cluster = 2
 min_input_tokens, max_input_tokens = 5, 200
 min_output_tokens, max_output_tokens = 1, 100
 min_input_sents, max_input_sents = 1, 5
