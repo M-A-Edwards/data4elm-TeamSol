@@ -81,7 +81,7 @@ def main():
     token_counts = {task: 0 for task in task_clusters}
     example_counts = {task: 0 for task in task_clusters}
 
-    for cluster_id in tqdm(range(1, 21), desc="Processing Clusters"):
+    for cluster_id in tqdm(range(1, 11), desc="Processing Clusters"):
         dataset = load_cluster_data(cluster_id)
         if not dataset:
             print(f"[{datetime.now()}] Skipping cluster {cluster_id} (no data)")
