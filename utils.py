@@ -1,3 +1,4 @@
+# utils.py
 import re
 import json
 import os
@@ -20,15 +21,14 @@ HEURISTICS = {
         r"\b(narrator|story|situation|scenario)\b.+?\b(ask|question|response|detail)\b"
     ],
     "reasoning": [
-        r"\bif\b.+?\bthen\b",
-        r"\bhow\s+many\b",
-        r"\b(prove|deduce|derive|infer|therefore|thus|hence)\b" 
-        
+        r"(Q:|Question:|\d+\.\s|\[\d+\])(.+?)\?\s*(A:|Answer:|Explanation:|a\)|b\)|c\)|d\))?\s*(.+?)(?=\n*(Q:|Question:|\[\d+\]|\d+\.\s|$))",
+        r"(What|How|Why|Where|Who)\s.+?\?\s*(.+?)(?=\n\n|\Z|\n\s*(What|How|Why|Where|Who)\s|$)",
+        r"\b(\d+\.\s.+?\?)\s*(.+?)(?=\d+\.|$|\n\n)",
+        r"(Directions:\s.+?)\?\s*(.+?)(?=\n\n|\Z|Multiple Choice|Circle the correct answer)",
     ],
     "function_calling": [
         r"\b[\w\.]+\s*\(\s*\w+\s*=\s*[^,)]+(?:\s*,\s*\w+\s*=\s*[^,)]+)*\s*\)",
     ],
-    
 }
 
 # TF-IDF vectorizers cache
@@ -57,13 +57,46 @@ def tfidf_filter(text, vectorizer, feature_names, task_terms):
     )
     return tfidf_score > 0.1
 
+def sentence_count(text):
+    return len(re.findall(r"[.!?]", text))
+
+def split_input_output(text, task):
+    """
+    Split raw text into input/output depending on task type.
+    Returns (input_text, output_text) or (None, None) if can't parse.
+    """
+    if task == "reasoning":
+        match = re.search(r"(Q:|Question:)(.+?)(A:|Answer:)(.+)", text, re.S | re.I)
+        if match:
+            return match.group(2).strip(), match.group(4).strip()
+
+    elif task == "roleplay":
+        # last line as output, everything else as input
+        parts = text.strip().splitlines()
+        if len(parts) > 1:
+            return "\n".join(parts[:-1]).strip(), parts[-1].strip()
+
+    elif task == "function_calling":
+        match = re.search(r"(?:Answer:|->)\s*(.+)", text, re.S | re.I)
+        if match:
+            input_text = text[:match.start()].strip()
+            return input_text, match.group(1).strip()
+
+    elif task == "rag":
+        match = re.search(r"(?:Answer:)\s*(.+)", text, re.S | re.I)
+        if match:
+            input_text = text[:match.start()].strip()
+            return input_text, match.group(1).strip()
+
+    return None, None
+
 def save_to_json(task, examples, token_count, cluster_id, output_dir):
     """Save filtered examples to JSON file."""
-    instances = [{"text": ex["text"]} for ex in examples]
+    instances = [{"input": ex["input"], "output": ex["output"]} for ex in examples]
     if not instances:
         return
     filename = f"{task}_c{cluster_id}.json"
     filepath = os.path.join(output_dir, filename)
     with open(filepath, "w") as f:
-        json.dump({"type": "text_only", "instances": instances}, f, indent=2)
-    print(f"Saved {task} (cluster {cluster_id}): {len(instances)} instances, {token_count} tokens → {filepath}")
+        json.dump({"type": "text2text", "instances": instances}, f, indent=2)
+    print(f"Saved {task} (cluster {cluster_id}): {len(instances)} instances, {token_count} tokens -> {filename}")
